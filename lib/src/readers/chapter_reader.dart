@@ -5,15 +5,12 @@ import '../schema/navigation/epub_navigation_point.dart';
 
 class ChapterReader {
   static List<EpubChapterRef> getChapters(EpubBookRef bookRef) {
-    if (bookRef.Schema.Navigation == null) {
-      return List<EpubChapterRef>();
-    }
     return getChaptersImpl(bookRef, bookRef.Schema.Navigation.NavMap.Points);
   }
 
   static List<EpubChapterRef> getChaptersImpl(
       EpubBookRef bookRef, List<EpubNavigationPoint> navigationPoints) {
-    List<EpubChapterRef> result = List<EpubChapterRef>();
+    List<EpubChapterRef> result = new List<EpubChapterRef>();
     navigationPoints.forEach((EpubNavigationPoint navigationPoint) {
       String contentFileName;
       String anchor;
@@ -28,15 +25,15 @@ class ChapterReader {
         anchor = navigationPoint.Content.Source
             .substring(contentSourceAnchorCharIndex + 1);
       }
-      contentFileName = Uri.decodeFull(contentFileName);
+
       EpubTextContentFileRef htmlContentFileRef;
       if (!bookRef.Content.Html.containsKey(contentFileName)) {
-        throw Exception(
+        throw new Exception(
             "Incorrect EPUB manifest: item with href = \"${contentFileName}\" is missing.");
       }
 
       htmlContentFileRef = bookRef.Content.Html[contentFileName];
-      EpubChapterRef chapterRef = EpubChapterRef(htmlContentFileRef);
+      EpubChapterRef chapterRef = new EpubChapterRef(htmlContentFileRef);
       chapterRef.ContentFileName = contentFileName;
       chapterRef.Anchor = anchor;
       chapterRef.Title = navigationPoint.NavigationLabels.first.Text;

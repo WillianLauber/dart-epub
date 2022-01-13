@@ -1,6 +1,4 @@
 language: dart
-dart: 
-  - stable
 sudo: false
 before_script:
  - chmod +x ./tool/travis.sh
@@ -13,4 +11,3 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    dart: stable
